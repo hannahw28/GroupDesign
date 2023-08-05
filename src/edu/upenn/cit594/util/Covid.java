@@ -15,7 +15,7 @@ public class Covid {
 		
 	}
 	/**
-	 * @return the zipcod
+	 * @return the zipcode
 	 */
 	public int getZipcode() {
 		return zipcode;
