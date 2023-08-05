@@ -2,13 +2,13 @@ package edu.upenn.cit594.util;
 
 public class Population {
 	//instances
-	private int zip_code;
+	private int zipcode;
 	private int population;
 	
 	//constructors
 	public Population() {};
-	public Population(int zip_code, int population) {
-		this.zip_code = zip_code;
+	public Population(int zipcode, int population) {
+		this.zipcode = zipcode;
 		this.population = population;
 	}
 	
@@ -16,14 +16,14 @@ public class Population {
 	/**
 	 * @return the zip_code
 	 */
-	public int getZip_code() {
-		return zip_code;
+	public int getZipcode() {
+		return zipcode;
 	}
 	/**
-	 * @param zip_code the zip_code to set
+	 * @param zipcode the zip_code to set
 	 */
-	public void setZip_code(int zip_code) {
-		this.zip_code = zip_code;
+	public void setZipcode(int zipcode) {
+		this.zipcode = zipcode;
 	}
 	/**
 	 * @return the population
