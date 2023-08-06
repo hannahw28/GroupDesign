@@ -8,9 +8,10 @@ public class Logger {
     private PrintWriter out;
 
     private boolean isDestinationSet = false;
-    private boolean isUsingSystemErr = false;
 
-    private Logger(){}
+    private Logger(){
+        out = new PrintWriter(System.err);
+    }
 
     private static Logger instance;
 
@@ -23,27 +24,19 @@ public class Logger {
 
     public void setDestination(String filename) throws IOException {
         if (filename == null || filename.isEmpty()){
-            isUsingSystemErr = true;
+            throw new IOException();
         }
-        if (out != null && !isUsingSystemErr){
+        if (isDestinationSet && out != null){
             out.close();
         }
-
-        if (isUsingSystemErr){
-            out = new PrintWriter(System.err);
-        } else{
-            FileWriter fw = new FileWriter(filename, true);
-            out = new PrintWriter(fw, true);
-            isDestinationSet = true;
-            isUsingSystemErr = false;
-        }
+        FileWriter fw = new FileWriter(filename, true);
+        out = new PrintWriter(fw, true);
+        isDestinationSet = true;
     }
 
     public void log(String msg){
-        if (isDestinationSet || isUsingSystemErr){
-            out.println(System.currentTimeMillis() + " " + msg);
-            out.flush();
-        }
+        out.println(System.currentTimeMillis() + " " + msg);
+        out.flush();
     }
 
     public void close(){
