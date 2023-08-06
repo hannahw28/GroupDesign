@@ -19,6 +19,46 @@ public class Processor {
     protected AverageCalculator marketValueCalculator = new AverageMarketValueCalculator();
     protected AverageCalculator livableAreaCalculator = new AverageLivableAreaCalculator();
 
+    public Processor(CovidFileReader covidReader) throws IOException {
+        this.covidReader = covidReader;
+        covid = covidReader.readCovid();
+    }
+
+    public Processor(PopulationFileReader populationReader){
+        this.populationReader = populationReader;
+        population = populationReader.readPopulation();
+        this.populationMap = initializePopulationMap();
+    }
+
+    public Processor(PropertyFileReader propertyReader){
+        this.propertyReader = propertyReader;
+        property = propertyReader.readProperty();
+    }
+
+    public Processor(CovidFileReader covidReader, PopulationFileReader populationReader) throws IOException {
+        this.covidReader = covidReader;
+        covid = covidReader.readCovid();
+        this.populationReader = populationReader;
+        population = populationReader.readPopulation();
+        this.populationMap = initializePopulationMap();
+    }
+
+    public Processor(CovidFileReader covidReader,PropertyFileReader propertyReader) throws IOException {
+        this.covidReader = covidReader;
+        covid = covidReader.readCovid();
+        this.propertyReader = propertyReader;
+        property = propertyReader.readProperty();
+    }
+
+    public Processor(PopulationFileReader populationReader, PropertyFileReader propertyReader){
+        this.populationReader = populationReader;
+        population = populationReader.readPopulation();
+        this.populationMap = initializePopulationMap();
+        this.propertyReader = propertyReader;
+        property = propertyReader.readProperty();
+    }
+
+
     public Processor(CovidFileReader covidReader, PopulationFileReader populationReader, PropertyFileReader propertyReader) throws IOException {
         this.covidReader = covidReader;
         covid = covidReader.readCovid();
@@ -91,6 +131,7 @@ public class Processor {
             return 0;
         }
         int populationValue = populationMap.get(zipcode);
+        if (populationValue == 0) return 0;
         int total = 0;
         for (Property p : property){
             if (zipcode == p.getZipcode() && isNumeric(p.getMarketValue())){
