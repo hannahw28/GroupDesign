@@ -15,6 +15,7 @@ public class Processor {
     protected CovidFileReader covidReader;
     protected PopulationFileReader populationReader;
     protected PropertyFileReader propertyReader;
+    Map<Integer, Integer> populationMap;
     protected AverageCalculator marketValueCalculator = new AverageMarketValueCalculator();
     protected AverageCalculator livableAreaCalculator = new AverageLivableAreaCalculator();
 
@@ -25,6 +26,7 @@ public class Processor {
         population = populationReader.readPopulation();
         this.propertyReader = propertyReader;
         property = propertyReader.readProperty();
+        this.populationMap = initializePopulationMap();
     }
 
     public int calculateAllPopulation(){
@@ -49,9 +51,8 @@ public class Processor {
         return populationMap;
     }
 
-    public List<ZipCodeTallies> calculateVaccinatedPerPopulation(String date, String type){
-        List<ZipCodeTallies> zipTalliesList = new ArrayList<>();
-        Map<Integer, Integer> populationMap = initializePopulationMap();
+    public List<Tallies> calculateVaccinatedPerPopulation(String date, String type){
+        List<Tallies> zipTalliesList = new ArrayList<>();
         boolean isPartial = "partial".equalsIgnoreCase(type);
 
         for (Covid c : covid){
@@ -71,9 +72,9 @@ public class Processor {
 
             double ratio = (double) vaccinated / populationValue;
             ratio = Math.round(ratio * 10000)/10000.0;
-            zipTalliesList.add(new ZipCodeTallies(zip, ratio));
+            zipTalliesList.add(new Tallies(zip, ratio));
         }
-        zipTalliesList.sort(Comparator.comparing(ZipCodeTallies::getZipcode));
+        zipTalliesList.sort(Comparator.comparing(Tallies::getKey));
         return zipTalliesList;
     }
 
@@ -83,6 +84,39 @@ public class Processor {
 
     public int calculateAverageLivableArea(int zipcode){
         return livableAreaCalculator.calculateAverage(zipcode, property);
+    }
+
+    public int calculateTotalMarketValuePerCapita(int zipcode){
+        if (!populationMap.containsKey(zipcode)){
+            return 0;
+        }
+        int populationValue = populationMap.get(zipcode);
+        int total = 0;
+        for (Property p : property){
+            if (zipcode == p.getZipcode() && isNumeric(p.getMarketValue())){
+                total += Integer.parseInt(p.getMarketValue());
+            }
+        }
+        return (int)(total/populationValue);
+    }
+
+    private boolean isNumeric(String str){
+        if (str == null){
+            return false;
+        }
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public List<Tallies> listVacRateByValuePerCapital(){
+        /*
+        List average market value per capital and their corresponding vaccination rate at the zipcode level, in ascending order of average market value
+         */
+        return null;
     }
 
 }
