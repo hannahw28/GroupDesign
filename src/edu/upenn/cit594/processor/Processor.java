@@ -9,40 +9,15 @@ import java.io.IOException;
 import java.util.*;
 
 public class Processor {
-    protected List<Covid> covid;
-    protected List<Population> population;
-    protected List<Property> property;
-    protected CovidFileReader covidReader;
-    protected PopulationFileReader populationReader;
-    protected PropertyFileReader propertyReader;
+    private List<Covid> covid;
+    private List<Population> population;
+    private List<Property> property;
+    private CovidFileReader covidReader;
+    private PopulationFileReader populationReader;
+    private PropertyFileReader propertyReader;
     Map<Integer, Integer> populationMap;
     protected AverageCalculator marketValueCalculator = new AverageMarketValueCalculator();
     protected AverageCalculator livableAreaCalculator = new AverageLivableAreaCalculator();
-
-    public Processor(CovidFileReader covidReader) throws IOException {
-        // don't throw exception. catch exception in Reader.
-        this(covidReader, null, null);
-    }
-
-    public Processor(PopulationFileReader populationReader) throws IOException {
-        this(null, populationReader, null);
-    }
-
-    public Processor(PropertyFileReader propertyReader) throws IOException {
-        this(null, null, propertyReader);
-    }
-
-    public Processor(CovidFileReader covidReader, PopulationFileReader populationReader) throws IOException {
-        this(covidReader,populationReader,null);
-    }
-
-    public Processor(CovidFileReader covidReader,PropertyFileReader propertyReader) throws IOException {
-        this(covidReader,null,propertyReader);
-    }
-
-    public Processor(PopulationFileReader populationReader, PropertyFileReader propertyReader) throws IOException {
-        this(null,populationReader,propertyReader);
-    }
 
 
     public Processor(CovidFileReader covidReader, PopulationFileReader populationReader, PropertyFileReader propertyReader) throws IOException {
@@ -68,6 +43,10 @@ public class Processor {
         /*
         Calculates total population
          */
+        if (population == null){
+            System.err.println("Error: population is null");
+            System.exit(1);
+        }
         int totalPopulation = 0;
         for (Population p: population){
             totalPopulation += p.getPopulation();
@@ -89,6 +68,10 @@ public class Processor {
     }
 
     public List<Tallies> calculateVaccinatedPerPopulation(String date, String type){
+        if (covid == null || population == null){
+            System.err.println("Error: covid or population is null.");
+            System.exit(1);
+        }
         initializePopulationMap();
         List<Tallies> zipTalliesList = new ArrayList<>();
         boolean isPartial = "partial".equalsIgnoreCase(type);
@@ -105,9 +88,11 @@ public class Processor {
             int populationValue = populationMap.get(zip);
             if (populationValue == 0) continue;
 
+            // if population is not 0, proceed
             int vaccinated = isPartial ? c.getPartiallyVaccinated() : c.getFullyVaccinated();
             if (vaccinated == 0) continue;
 
+            // if vaccination is not 0, proceed
             double ratio = (double) vaccinated / populationValue;
             ratio = Math.round(ratio * 10000)/10000.0;
             zipTalliesList.add(new Tallies(zip, ratio));
@@ -117,14 +102,26 @@ public class Processor {
     }
 
     public int calculateAverageMarketValue(int zipcode){
+        if (property == null){
+            System.err.println("Error: property is null.");
+            System.exit(1);
+        }
         return marketValueCalculator.calculateAverage(zipcode, property);
     }
 
     public int calculateAverageLivableArea(int zipcode){
+        if (property == null){
+            System.err.println("Error: property is null.");
+            System.exit(1);
+        }
         return livableAreaCalculator.calculateAverage(zipcode, property);
     }
 
     public int calculateTotalMarketValuePerCapita(int zipcode){
+        if (population == null || property == null){
+            System.err.println("Error: population or property is null.");
+            System.exit(1);
+        }
         initializePopulationMap();
         if (!populationMap.containsKey(zipcode)){
             return 0;

@@ -36,8 +36,6 @@ public class Main {
                     System.exit(1);
                 }
 
-
-
                 if (name.equals("log")){
                     try {
                         Logger.getInstance().setDestination(value);
@@ -70,67 +68,31 @@ public class Main {
         logger.log(sb.toString());
         // Should FileReader has a Logger field? so that it can log info when file is open?
 
-        Processor processor;
-        if (seenArgs.containsKey("covid") && seenArgs.containsKey("population") && seenArgs.containsKey("property")){
-            CovidFileReader covidReader = Main.getCovidReader(seenArgs);
+        CovidFileReader covidReader = null;
+        PopulationFileReader populationReader = null;
+        PropertyFileReader propertyReader = null;
 
-            String populationFile = seenArgs.get("population");
-            PopulationFileReader populationReader = new PopulationFileReader(populationFile);
-
-            String propertyFile = seenArgs.get("property");
-            PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
-
-            processor = new Processor(covidReader,populationReader,propertyReader);
-        }  else if (seenArgs.containsKey("covid") && seenArgs.containsKey("population")){
-            CovidFileReader covidReader = Main.getCovidReader(seenArgs);
-
-            String populationFile = seenArgs.get("population");
-            PopulationFileReader populationReader = new PopulationFileReader(populationFile);
-
-            processor = new Processor(covidReader,populationReader);
-        } else if (seenArgs.containsKey("covid") && seenArgs.containsKey("property")){
-            CovidFileReader covidReader = Main.getCovidReader(seenArgs);
-
-            String propertyFile = seenArgs.get("property");
-            PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
-
-            processor = new Processor(covidReader,propertyReader);
-        } else if (seenArgs.containsKey("population") && seenArgs.containsKey("property")){
-            String populationFile = seenArgs.get("population");
-            PopulationFileReader populationReader = new PopulationFileReader(populationFile);
-
-            String propertyFile = seenArgs.get("property");
-            PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
-
-            processor = new Processor(populationReader,propertyReader);
-        } else if (seenArgs.containsKey("covid")){
-            CovidFileReader covidReader = getCovidReader(seenArgs);
-            processor = new Processor(covidReader);
-        } else if (seenArgs.containsKey("population") ){
-            String populationFile = seenArgs.get("population");
-            PopulationFileReader populationReader = new PopulationFileReader(populationFile);
-
-            processor = new Processor(populationReader);
-        } else{
-            // only property
-            String propertyFile = seenArgs.get("property");
-            PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
-
-            processor = new Processor(propertyReader);
+        if (seenArgs.containsKey("covid")){
+            String covidFile = seenArgs.get("covid");
+            if (covidFile.toLowerCase().endsWith(".json")){
+                covidReader = new CovidJsonReader(covidFile);
+            } else {
+                covidReader = new CovidCsvReader(covidFile);
+            }
         }
+        if (seenArgs.containsKey("population")){
+            String populationFile = seenArgs.get("population");
+            populationReader = new PopulationFileReader(populationFile);
+        }
+        if (seenArgs.containsKey("property")){
+            String propertyFile = seenArgs.get("property");
+            propertyReader = new PropertyFileReader(propertyFile);
+        }
+
+        Processor processor = new Processor(covidReader, populationReader, propertyReader);
+
         UI ui = new UI(processor, availableDatasets);
         ui.start();
-
     }
 
-    private static CovidFileReader getCovidReader(Map<String, String> seenArgs){
-        String covidFile = seenArgs.get("covid");
-        CovidFileReader covidReader;
-        if (covidFile.toLowerCase().endsWith(".json")){
-            covidReader = new CovidJsonReader(covidFile);
-        } else {
-            covidReader = new CovidCsvReader(covidFile);
-        }
-        return covidReader;
-    }
 }
