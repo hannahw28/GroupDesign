@@ -40,12 +40,15 @@ public class Logger {
     }
 
     public void log(String msg){
-        if (isDestinationSet){
+        if (isDestinationSet || isUsingSystemErr){
             out.println(System.currentTimeMillis() + " " + msg);
             out.flush();
-        } else{
-            System.err.println("Error: destination has not been set for Logger");
-            System.exit(1);
+        }
+    }
+
+    public void close(){
+        if (out != null){
+            out.close();
         }
     }
 }

@@ -16,6 +16,7 @@ public class Main {
         Set<String> availableDatasets = new HashSet<>();
         Map<String, String> seenArgs = new HashMap<>();
         StringBuilder sb = new StringBuilder();
+        Logger logger = Logger.getInstance();
 
         Pattern pattern = Pattern.compile("^--(?<name>.+?)=(?<value>.+)$");
 
@@ -38,7 +39,7 @@ public class Main {
 
                 if (name.equals("log")){
                     try {
-                        Logger.getInstance().setDestination(value);
+                        logger.setDestination(value);
                     } catch(IOException e){
                         System.err.println("Error: unable to initialize logger with file: " + value);
                         System.exit(1);
@@ -63,8 +64,7 @@ public class Main {
                 System.exit(1);
             }
         }
-        // Logger should have been set here
-        Logger logger = Logger.getInstance();
+
         logger.log(sb.toString());
         // Should FileReader has a Logger field? so that it can log info when file is open? YES
 
@@ -93,6 +93,7 @@ public class Main {
 
         UI ui = new UI(processor, availableDatasets);
         ui.start();
+        logger.close();
     }
 
 }
