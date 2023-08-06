@@ -3,6 +3,7 @@ package edu.upenn.cit594;
 import edu.upenn.cit594.datamanagement.*;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.ui.UI;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class Main {
         logger.log(sb.toString());
         // Should FileReader has a Logger field? so that it can log info when file is open?
 
-
+        Processor processor;
         if (seenArgs.containsKey("covid") && seenArgs.containsKey("population") && seenArgs.containsKey("property")){
             CovidFileReader covidReader = Main.getCovidReader(seenArgs);
 
@@ -79,21 +80,21 @@ public class Main {
             String propertyFile = seenArgs.get("property");
             PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
 
-            Processor processor = new Processor(covidReader,populationReader,propertyReader);
+            processor = new Processor(covidReader,populationReader,propertyReader);
         }  else if (seenArgs.containsKey("covid") && seenArgs.containsKey("population")){
             CovidFileReader covidReader = Main.getCovidReader(seenArgs);
 
             String populationFile = seenArgs.get("population");
             PopulationFileReader populationReader = new PopulationFileReader(populationFile);
 
-            Processor processor = new Processor(covidReader,populationReader);
+            processor = new Processor(covidReader,populationReader);
         } else if (seenArgs.containsKey("covid") && seenArgs.containsKey("property")){
             CovidFileReader covidReader = Main.getCovidReader(seenArgs);
 
             String propertyFile = seenArgs.get("property");
             PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
 
-            Processor processor = new Processor(covidReader,propertyReader);
+            processor = new Processor(covidReader,propertyReader);
         } else if (seenArgs.containsKey("population") && seenArgs.containsKey("property")){
             String populationFile = seenArgs.get("population");
             PopulationFileReader populationReader = new PopulationFileReader(populationFile);
@@ -101,23 +102,24 @@ public class Main {
             String propertyFile = seenArgs.get("property");
             PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
 
-            Processor processor = new Processor(populationReader,propertyReader);
+            processor = new Processor(populationReader,propertyReader);
         } else if (seenArgs.containsKey("covid")){
-            CovidFileReader covidReader = Main.getCovidReader(seenArgs);
-            Processor processor = new Processor(covidReader);
+            CovidFileReader covidReader = getCovidReader(seenArgs);
+            processor = new Processor(covidReader);
         } else if (seenArgs.containsKey("population") ){
             String populationFile = seenArgs.get("population");
             PopulationFileReader populationReader = new PopulationFileReader(populationFile);
 
-            Processor processor = new Processor(populationReader);
+            processor = new Processor(populationReader);
         } else{
             // only property
             String propertyFile = seenArgs.get("property");
             PropertyFileReader propertyReader = new PropertyFileReader(propertyFile);
 
-            Processor processor = new Processor(propertyReader);
+            processor = new Processor(propertyReader);
         }
-
+        UI ui = new UI(processor, availableDatasets);
+        ui.start();
 
     }
 

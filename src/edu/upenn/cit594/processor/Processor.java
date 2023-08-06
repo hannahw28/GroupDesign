@@ -20,53 +20,48 @@ public class Processor {
     protected AverageCalculator livableAreaCalculator = new AverageLivableAreaCalculator();
 
     public Processor(CovidFileReader covidReader) throws IOException {
-        this.covidReader = covidReader;
-        covid = covidReader.readCovid();
+        // don't throw exception. catch exception in Reader.
+        this(covidReader, null, null);
     }
 
-    public Processor(PopulationFileReader populationReader){
-        this.populationReader = populationReader;
-        population = populationReader.readPopulation();
-        this.populationMap = initializePopulationMap();
+    public Processor(PopulationFileReader populationReader) throws IOException {
+        this(null, populationReader, null);
     }
 
-    public Processor(PropertyFileReader propertyReader){
-        this.propertyReader = propertyReader;
-        property = propertyReader.readProperty();
+    public Processor(PropertyFileReader propertyReader) throws IOException {
+        this(null, null, propertyReader);
     }
 
     public Processor(CovidFileReader covidReader, PopulationFileReader populationReader) throws IOException {
-        this.covidReader = covidReader;
-        covid = covidReader.readCovid();
-        this.populationReader = populationReader;
-        population = populationReader.readPopulation();
-        this.populationMap = initializePopulationMap();
+        this(covidReader,populationReader,null);
     }
 
     public Processor(CovidFileReader covidReader,PropertyFileReader propertyReader) throws IOException {
-        this.covidReader = covidReader;
-        covid = covidReader.readCovid();
-        this.propertyReader = propertyReader;
-        property = propertyReader.readProperty();
+        this(covidReader,null,propertyReader);
     }
 
-    public Processor(PopulationFileReader populationReader, PropertyFileReader propertyReader){
-        this.populationReader = populationReader;
-        population = populationReader.readPopulation();
-        this.populationMap = initializePopulationMap();
-        this.propertyReader = propertyReader;
-        property = propertyReader.readProperty();
+    public Processor(PopulationFileReader populationReader, PropertyFileReader propertyReader) throws IOException {
+        this(null,populationReader,propertyReader);
     }
 
 
     public Processor(CovidFileReader covidReader, PopulationFileReader populationReader, PropertyFileReader propertyReader) throws IOException {
         this.covidReader = covidReader;
-        covid = covidReader.readCovid();
+        if (covidReader != null){
+            covid = covidReader.readCovid();
+        }
+
         this.populationReader = populationReader;
-        population = populationReader.readPopulation();
+        if (populationReader != null){
+            population = populationReader.readPopulation();
+        }
+
         this.propertyReader = propertyReader;
-        property = propertyReader.readProperty();
-        this.populationMap = initializePopulationMap();
+        if (propertyReader != null){
+            property = propertyReader.readProperty();
+        }
+
+
     }
 
     public int calculateAllPopulation(){
@@ -84,14 +79,17 @@ public class Processor {
         /*
         Creates a population map to enable quick lookups of population values given zip codes. Memoization.
          */
-        Map<Integer, Integer> populationMap = new HashMap<>();
-        for (Population p : population){
-            populationMap.put(p.getZipcode(), p.getPopulation());
+        if (populationMap == null){
+            populationMap = new HashMap<>();
+            for (Population p : population){
+                populationMap.put(p.getZipcode(), p.getPopulation());
+            }
         }
         return populationMap;
     }
 
     public List<Tallies> calculateVaccinatedPerPopulation(String date, String type){
+        initializePopulationMap();
         List<Tallies> zipTalliesList = new ArrayList<>();
         boolean isPartial = "partial".equalsIgnoreCase(type);
 
@@ -127,6 +125,7 @@ public class Processor {
     }
 
     public int calculateTotalMarketValuePerCapita(int zipcode){
+        initializePopulationMap();
         if (!populationMap.containsKey(zipcode)){
             return 0;
         }

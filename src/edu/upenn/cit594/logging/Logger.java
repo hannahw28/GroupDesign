@@ -43,6 +43,9 @@ public class Logger {
         if (isDestinationSet){
             out.println(System.currentTimeMillis() + " " + msg);
             out.flush();
+        } else{
+            System.err.println("Error: destination has not been set for Logger");
+            System.exit(1);
         }
     }
 }

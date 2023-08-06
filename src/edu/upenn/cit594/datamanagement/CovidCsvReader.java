@@ -31,9 +31,9 @@ public class CovidCsvReader extends CovidFileReader{
 		List<Covid> covid = new ArrayList<>();
 		
 		String line;
-		
+
 		line = reader.readLine();
-		
+
 		String[] parts = line.split(",");
 		
 		String regex = "\\d{4}[-]\\d{2}[-]\\d{2}\\s+\\d{2}[:]\\d{2}[:]\\d{2}";

@@ -54,9 +54,14 @@ public class UI {
                     if (action < 0 || action > 7){
                         throw new InputMismatchException();
                     }
+                    if (!availableActions.contains(action)){
+                        throw new IllegalArgumentException();
+                    }
                     break;
                 } catch(InputMismatchException | NumberFormatException e){
                     System.out.println("Invalid input, please enter a number between 0 and 7.");
+                } catch(IllegalArgumentException e){
+                    System.out.println("Invalid input, please enter an available option.");
                 }
             }
             switch(action){
