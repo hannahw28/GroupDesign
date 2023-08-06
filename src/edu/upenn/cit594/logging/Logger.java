@@ -40,7 +40,7 @@ public class Logger {
     }
 
     public void close(){
-        if (out != null){
+        if (isDestinationSet && out != null){
             out.close();
         }
     }
