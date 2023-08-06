@@ -45,10 +45,8 @@ public class UI {
             int action = -1;
 
             while (true){
-                System.out.println("> ");
-                System.out.flush();
-                String line = scanner.nextLine();
-                logger.log(line);
+                String line = getInput(scanner, "Please select an option (type the number):");
+
                 try{
                     action = Integer.parseInt(line);
                     if (action < 0 || action > 7){
@@ -84,22 +82,13 @@ public class UI {
                     break;
                 case 3:
                     // show the total vaccinations per capita for each ZIP Code
-                    System.out.println("Please enter 'partial' or 'full': ");
-                    System.out.println("> ");
-                    System.out.flush();
-
-                    String type = scanner.nextLine();
-                    logger.log(type);
+                    String type = getInput(scanner, "Please enter 'partial' or 'full': ");
                     if (!type.equals("partial") && !type.equals("full")){
                         System.err.println("Error: Invalid input. Returning to main menu.");
                         break;
                     }
 
-                    System.out.println("Please enter a date in the format 'YYYY-MM-DD: ");
-                    System.out.println("> ");
-                    System.out.flush();
-                    String date = scanner.nextLine();
-                    logger.log(date);
+                    String date = getInput(scanner, "Please enter a date in the format 'YYYY-MM-DD: ");
                     if (!date.matches("\\d{4}-\\d{2}-\\d{2}")){
                         System.err.println("Error: Invalid date format. Returning to main menu");
                         break;
@@ -118,14 +107,10 @@ public class UI {
                     break;
                 case 4:
                     // show the average market value for properties in a specified ZIP Code
-                    System.out.println("Please enter a 5-digit zip code: ");
-                    System.out.println("> ");
-                    System.out.flush();
+                    String zipcode = getInput(scanner, "Please enter a 5-digit zip code: ");
 
-                    String zipcode = scanner.nextLine();
-                    logger.log(zipcode);
                     if (zipcode.length() != 5 || !zipcode.matches("\\d+")){
-                        System.err.println("Error: Invalid zipcode. It must be a 5-digit number.");
+                        System.err.println("Error: Invalid zipcode. It must be a 5-digit number. Returning to main menu.");
                     } else{
                         int zip = Integer.parseInt(zipcode);
                         System.out.println("BEGIN OUTPUT");
@@ -135,14 +120,10 @@ public class UI {
                     break;
                 case 5:
                     // show the average total livable area for properties in a specified ZIP Code
-                    System.out.println("Please enter a 5-digit zip code: ");
-                    System.out.println("> ");
-                    System.out.flush();
+                    String zipcode2 = getInput(scanner, "Please enter a 5-digit zip code: ");
 
-                    String zipcode2 = scanner.nextLine();
-                    logger.log(zipcode2);
                     if (zipcode2.length() != 5 || !zipcode2.matches("\\d+")){
-                        System.err.println("Error: Invalid zipcode. It must be a 5-digit number.");
+                        System.err.println("Error: Invalid zipcode. It must be a 5-digit number. Returning to main menu.");
                     } else{
                         int zip2 = Integer.parseInt(zipcode2);
                         System.out.println("BEGIN OUTPUT");
@@ -152,14 +133,10 @@ public class UI {
                     break;
                 case 6:
                     // show the total market value of properties, per capita, for a specified ZIP Code
-                    System.out.println("Please enter a 5-digit zip code: ");
-                    System.out.println("> ");
-                    System.out.flush();
+                    String zipcode3 = getInput(scanner, "Please enter a 5-digit zip code: ");
 
-                    String zipcode3 = scanner.nextLine();
-                    logger.log(zipcode3);
                     if (zipcode3.length() != 5 || !zipcode3.matches("\\d+")){
-                        System.err.println("Error: Invalid zipcode. It must be a 5-digit number.");
+                        System.err.println("Error: Invalid zipcode. It must be a 5-digit number. Returning to main menu.");
                     } else{
                         int zip3 = Integer.parseInt(zipcode3);
                         System.out.println("BEGIN OUTPUT");
@@ -185,7 +162,17 @@ public class UI {
         System.out.println("5. Show the average total livable area for properties in a specified ZIP Code.");
         System.out.println("6. Show the total market value of properties, per capita, for a specified ZIP Code.");
         System.out.println("7. Show the results of your custom feature.");
-        System.out.println("Please select an option (type the number):");
     }
+
+    private String getInput(Scanner scanner, String msg){
+        System.out.println(msg);
+        System.out.println("> ");
+        System.out.flush();
+
+        String output = scanner.nextLine();
+        logger.log(output);
+        return output;
+    }
+
 
 }
