@@ -52,7 +52,7 @@ public class Main {
                     }
                 }
 
-                // see if the file can be open
+                // see if the file can be open - this will be handled in Reader
 
                 seenArgs.put(name, value);
                 availableDatasets.add(name);
@@ -66,7 +66,7 @@ public class Main {
         // Logger should have been set here
         Logger logger = Logger.getInstance();
         logger.log(sb.toString());
-        // Should FileReader has a Logger field? so that it can log info when file is open?
+        // Should FileReader has a Logger field? so that it can log info when file is open? YES
 
         CovidFileReader covidReader = null;
         PopulationFileReader populationReader = null;
