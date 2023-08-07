@@ -18,6 +18,7 @@ public class UI {
         availableActions = new ArrayList<>();
         availableActions.add(0);
         availableActions.add(1);
+        
         if (availableDatasets.contains("population")){
             availableActions.add(2);
         }
