@@ -19,7 +19,7 @@ public class AverageLivableAreaCalculator implements AverageCalculator{
 
         for (Property p : properties){
             if (p.getZipcode() == zipcode && isNumeric(p.getTotalLivableArea())){
-                total += Integer.parseInt(p.getTotalLivableArea());
+                total += Double.parseDouble(p.getTotalLivableArea());
                 count++;
             }
         }
@@ -35,7 +35,7 @@ public class AverageLivableAreaCalculator implements AverageCalculator{
             return false;
         }
         try {
-            Integer.parseInt(str);
+            Double.parseDouble(str);
             return true;
         } catch (NumberFormatException e){
             return false;
