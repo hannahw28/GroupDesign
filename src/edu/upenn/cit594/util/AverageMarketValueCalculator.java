@@ -20,7 +20,7 @@ public class AverageMarketValueCalculator implements AverageCalculator{
         
         for (Property p : properties){
             if (p.getZipcode() == zipcode && isNumeric(p.getMarketValue())){
-                total += Integer.parseInt(p.getMarketValue());
+                total += Double.parseDouble(p.getMarketValue());
                 count++;
             }
         }
