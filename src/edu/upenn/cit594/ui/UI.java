@@ -61,6 +61,7 @@ public class UI {
                     System.out.println("Invalid input, please enter a number between 0 and 7.");
                 } catch(IllegalArgumentException e){
                     System.out.println("Invalid input, please enter an available option.");
+                    displayOptions();
                 }
             }
             switch(action){
@@ -147,6 +148,15 @@ public class UI {
                     break;
                 case 7:
                     // show the results of your custom feature.
+                    Map<Integer, List<Integer>> res = processor.calculateFullVacRateAndAveragePropertyValue();
+                    System.out.println("BEGIN OUTPUT");
+                    for (Map.Entry<Integer, List<Integer>> entry : res.entrySet()){
+                        Integer zip4 = entry.getKey();
+                        Integer vacRate = entry.getValue().get(0);
+                        Integer propertyRate = entry.getValue().get(1);
+                        System.out.println(zip4 + " " + vacRate + " " + propertyRate);
+                    }
+                    System.out.println("END OUTPUT");
                     break;
             }
         }
@@ -162,7 +172,7 @@ public class UI {
         System.out.println("4. Show the average market value for properties in a specified ZIP Code.");
         System.out.println("5. Show the average total livable area for properties in a specified ZIP Code.");
         System.out.println("6. Show the total market value of properties, per capita, for a specified ZIP Code.");
-        System.out.println("7. Show the results of your custom feature.");
+        System.out.println("7. Show the full vaccination per capita and property value per capita for all ZIP Codes.");
     }
 
     private String getInput(Scanner scanner, String msg){

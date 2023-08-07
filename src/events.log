@@ -1,0 +1,87 @@
+1691449120016 --population=population.csv --covid=covid_data.csv --properties=downsampled_properties.csv --log=events.log 
+1691449120060 covid_data.csv
+1691449120198 population.csv
+1691449120201 downsampled_properties.csv
+1691449125411 1
+1691449145442 2
+1691449170790 3
+1691449173642 partial
+1691449188642 2021-03-25
+1691449200546 4
+1691449210917 19149
+1691449217534 5
+1691449219787 19149
+1691449326115 6
+1691449328240 19149
+1691449365448 0
+1691449438118 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691449438169 covid_data.csv
+1691449438330 population.csv
+1691449441519 1
+1691449474582 2
+1691449477966 0
+1691449559805 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691449559846 covid_data.csv
+1691449559998 population.csv
+1691449562720 5
+1691449657080 0
+1691449659932 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691449659970 covid_data.csv
+1691449660111 population.csv
+1691449662975 5
+1691449665062 0
+1691449677016 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691449677056 covid_data.csv
+1691449677195 population.csv
+1691449678955 5
+1691449952387 0
+1691449958811 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691449958859 covid_data.csv
+1691449958992 population.csv
+1691449962062 2
+1691449974266 3
+1691449976177 full
+1691449981304 2021-03-25
+1691450174612 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691450174650 covid_data.csv
+1691450174783 population.csv
+1691450180298 3
+1691450182099 partial
+1691450185434 2021-03-14
+1691450193457 3
+1691450194991 full
+1691450198511 2021-03-25
+1691450366156 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691450366210 covid_data.csv
+1691450366366 population.csv
+1691450369634 3
+1691450370789 full
+1691450373976 2021-03-25
+1691450454253 --population=population.csv --covid=covid_data.csv --log=events.log 
+1691450454292 covid_data.csv
+1691450454426 population.csv
+1691450456454 3
+1691450458046 full
+1691450460950 2021-03-25
+1691450526505 3
+1691450528141 partial
+1691450530925 2021-03-25
+1691450574881 0
+1691451582354 --population=population.csv --covid=covid_data.csv --log=events.log --properties=downsampled_properties.csv 
+1691451582409 covid_data.csv
+1691451582573 population.csv
+1691451582575 downsampled_properties.csv
+1691451586898 7
+1691451913377 0
+1691451980149 --population=population.csv --covid=covid_data.csv --log=events.log --properties=downsampled_properties.csv 
+1691451980200 covid_data.csv
+1691451980339 population.csv
+1691451980341 downsampled_properties.csv
+1691451982364 7
+1691452104980 0
+1691452115188 --population=population.csv --covid=covid_data.csv --log=events.log --properties=downsampled_properties.csv 
+1691452115233 covid_data.csv
+1691452115381 population.csv
+1691452115383 downsampled_properties.csv
+1691452117348 7
+1691452129415 0

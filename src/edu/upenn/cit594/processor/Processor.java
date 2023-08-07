@@ -95,7 +95,8 @@ public class Processor {
             // if vaccination is not 0, proceed
             double ratio = (double) vaccinated / populationValue;
             ratio = Math.round(ratio * 10000)/10000.0;
-            zipTalliesList.add(new Tallies(zip, ratio));
+            String formattedRatio = String.format("%.4f", ratio);
+            zipTalliesList.add(new Tallies(zip, formattedRatio));
         }
         zipTalliesList.sort(Comparator.comparing(Tallies::getKey));
         return zipTalliesList;
@@ -149,11 +150,43 @@ public class Processor {
         }
     }
 
-    public List<Tallies> listVacRateByValuePerCapital(){
+    public Map<Integer, List<Integer>> calculateFullVacRateAndAveragePropertyValue(){
         /*
-        List average market value per capital and their corresponding vaccination rate at the zipcode level, in ascending order of average market value
+        List full vaccination per capital and property market value per capital for each zipcode.
          */
-        return null;
+        if (covid == null || population == null || property == null){
+            System.err.println("Error: covid, population, or property is null");
+            System.exit(1);
+        }
+        initializePopulationMap();
+
+        Map<Integer, List<Integer>> results = new TreeMap<>();
+
+        for (int zip : populationMap.keySet()){
+            int fullVaccinatedPerCapita = 0;
+            int propertyValuePerCapita = 0;
+
+            int populationValue = populationMap.get(zip);
+            if (populationValue == 0) continue;
+
+            for (Covid c : covid){
+                if (c.getZipcode() == zip){
+                    fullVaccinatedPerCapita += (int)c.getFullyVaccinated();
+                }
+            }
+            fullVaccinatedPerCapita = (int)fullVaccinatedPerCapita / populationValue;
+
+            for (Property p : property){
+                if (p.getZipcode() == zip && isNumeric(p.getMarketValue())){
+                    propertyValuePerCapita += Double.parseDouble(p.getMarketValue());
+                }
+            }
+            propertyValuePerCapita = (int)propertyValuePerCapita / populationValue;
+
+            results.put(zip, Arrays.asList(fullVaccinatedPerCapita, propertyValuePerCapita));
+        }
+
+        return results;
     }
 
 }

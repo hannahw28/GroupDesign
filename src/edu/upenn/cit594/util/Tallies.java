@@ -2,9 +2,9 @@ package edu.upenn.cit594.util;
 
 public class Tallies {
     private final int key;
-    private final double value;
+    private final String value;
 
-    public Tallies(int key, double value) {
+    public Tallies(int key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -13,7 +13,7 @@ public class Tallies {
         return key;
     }
 
-    public double getValue(){
+    public String getValue(){
         return value;
     }
 }
