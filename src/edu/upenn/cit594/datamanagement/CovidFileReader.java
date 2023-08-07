@@ -9,9 +9,8 @@ public abstract class CovidFileReader {
 	/**
 	 * Abstract method for reading Covid datas
 	 * @return list of Covid datas
-	 * @throws IOException 
 	 */
-	public List<Covid> readCovid() throws IOException {
+	public List<Covid> readCovid() {
 		return null;
 	}
 }

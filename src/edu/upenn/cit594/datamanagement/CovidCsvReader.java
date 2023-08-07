@@ -30,7 +30,6 @@ public class CovidCsvReader extends CovidFileReader {
 	 * Reads Covid data
 	 * 
 	 * @return list of Covid datas
-	 * @throws IOException
 	 */
 	@Override
 	public List<Covid> readCovid() {

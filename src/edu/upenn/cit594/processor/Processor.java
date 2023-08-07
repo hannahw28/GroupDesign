@@ -20,7 +20,7 @@ public class Processor {
     protected AverageCalculator livableAreaCalculator = new AverageLivableAreaCalculator();
 
 
-    public Processor(CovidFileReader covidReader, PopulationFileReader populationReader, PropertyFileReader propertyReader) throws IOException {
+    public Processor(CovidFileReader covidReader, PopulationFileReader populationReader, PropertyFileReader propertyReader) {
         this.covidReader = covidReader;
         if (covidReader != null){
             covid = covidReader.readCovid();
@@ -131,7 +131,7 @@ public class Processor {
         int total = 0;
         for (Property p : property){
             if (zipcode == p.getZipcode() && isNumeric(p.getMarketValue())){
-                total += Integer.parseInt(p.getMarketValue());
+                total += (int)Double.parseDouble(p.getMarketValue());
             }
         }
         return (int)(total/populationValue);
@@ -142,7 +142,7 @@ public class Processor {
             return false;
         }
         try {
-            Integer.parseInt(str);
+            Double.parseDouble(str);
             return true;
         } catch (NumberFormatException e){
             return false;
