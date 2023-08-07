@@ -24,14 +24,14 @@ public class UI {
         if (availableDatasets.contains("covid") && availableDatasets.contains("population")){
             availableActions.add(3);
         }
-        if (availableDatasets.contains("property")){
+        if (availableDatasets.contains("properties")){
             availableActions.add(4);
             availableActions.add(5);
         }
-        if (availableDatasets.contains("property") && availableDatasets.contains("population")) {
+        if (availableDatasets.contains("properties") && availableDatasets.contains("population")) {
             availableActions.add(6);
         }
-        if (availableDatasets.contains("covid") && availableDatasets.contains("property") && availableDatasets.contains("population")) {
+        if (availableDatasets.contains("covid") && availableDatasets.contains("properties") && availableDatasets.contains("population")) {
             availableActions.add(7);
         }
     }
