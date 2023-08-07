@@ -27,7 +27,7 @@ public class Main {
                 name = name.toLowerCase();
                 String value = matcher.group("value");
 
-                if (!Arrays.asList("covid", "population", "property", "log").contains(name)){
+                if (!Arrays.asList("covid", "population", "properties", "log").contains(name)){
                     System.err.println("Error: Invalid argument name: " + name);
                     System.exit(1);
                 }
@@ -84,8 +84,8 @@ public class Main {
             String populationFile = seenArgs.get("population");
             populationReader = new PopulationFileReader(populationFile);
         }
-        if (seenArgs.containsKey("property")){
-            String propertyFile = seenArgs.get("property");
+        if (seenArgs.containsKey("properties")){
+            String propertyFile = seenArgs.get("properties");
             propertyReader = new PropertyFileReader(propertyFile);
         }
 
