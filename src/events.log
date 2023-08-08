@@ -1,0 +1,8 @@
+1691456931433 --population=population.csv --covid=covid_data.csv --log=events.log --properties=downsampled_properties.csv 
+1691456931486 covid_data.csv
+1691456931639 population.csv
+1691456931641 downsampled_properties.csv
+1691456937380 2
+1691456941664 7
+1691456947858 2023-11111
+1691456953069 0

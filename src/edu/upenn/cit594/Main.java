@@ -29,12 +29,12 @@ public class Main {
 
                 if (!Arrays.asList("covid", "population", "properties", "log").contains(name)){
                     System.err.println("Error: Invalid argument name: " + name);
-                    System.exit(1);
+                    throw new IllegalArgumentException();
                 }
 
                 if (seenArgs.containsKey(name)){
                     System.err.println("Error: Argument name used more than one: " + name);
-                    System.exit(1);
+                    throw new IllegalArgumentException();
                 }
 
                 if (name.equals("log")){
@@ -42,14 +42,14 @@ public class Main {
                         logger.setDestination(value);
                     } catch(IOException e){
                         System.err.println("Error: unable to initialize logger with file: " + value);
-                        System.exit(1);
+                        throw new IllegalArgumentException();
                     }
                 }
 
                 if (name.equals("covid")){
                     if (!value.toLowerCase().endsWith(".csv") && !value.toLowerCase().endsWith(".json")){
                         System.err.println("Error: unknown file format for Covid data file: " + value);
-                        System.exit(1);
+                        throw new IllegalArgumentException();
                     }
                 }
 
@@ -61,7 +61,7 @@ public class Main {
             } else{
                 // if any argument does not match
                 System.err.println("Error: argument does not the form '--name=value': " + arg);
-                System.exit(1);
+                throw new IllegalArgumentException();
             }
         }
 

@@ -45,7 +45,7 @@ public class Processor {
          */
         if (population == null){
             System.err.println("Error: population is null");
-            System.exit(1);
+            throw new IllegalArgumentException();
         }
         int totalPopulation = 0;
         for (Population p: population){
@@ -70,7 +70,7 @@ public class Processor {
     public List<Tallies> calculateVaccinatedPerPopulation(String date, String type){
         if (covid == null || population == null){
             System.err.println("Error: covid or population is null.");
-            System.exit(1);
+            throw new IllegalArgumentException();
         }
         initializePopulationMap();
         List<Tallies> zipTalliesList = new ArrayList<>();
@@ -105,7 +105,7 @@ public class Processor {
     public int calculateAverageMarketValue(int zipcode){
         if (property == null){
             System.err.println("Error: property is null.");
-            System.exit(1);
+            throw new IllegalArgumentException();
         }
         return marketValueCalculator.calculateAverage(zipcode, property);
     }
@@ -113,7 +113,7 @@ public class Processor {
     public int calculateAverageLivableArea(int zipcode){
         if (property == null){
             System.err.println("Error: property is null.");
-            System.exit(1);
+            throw new IllegalArgumentException();
         }
         return livableAreaCalculator.calculateAverage(zipcode, property);
     }
@@ -121,7 +121,7 @@ public class Processor {
     public int calculateTotalMarketValuePerCapita(int zipcode){
         if (population == null || property == null){
             System.err.println("Error: population or property is null.");
-            System.exit(1);
+            throw new IllegalArgumentException();
         }
         initializePopulationMap();
         if (!populationMap.containsKey(zipcode)){
@@ -156,7 +156,7 @@ public class Processor {
          */
         if (covid == null || population == null || property == null){
             System.err.println("Error: covid, population, or property is null");
-            System.exit(1);
+            throw new IllegalArgumentException();
         }
         initializePopulationMap();
 
