@@ -159,7 +159,7 @@ public class UI {
                         Integer zip4 = entry.getKey();
                         Integer vacRate = entry.getValue().get(0);
                         Integer propertyRate = entry.getValue().get(1);
-                        System.out.println(zip4 + " " + vacRate + " " + propertyRate);
+                        System.out.println("zip code: " + zip4 + " " + "Vaccination per capita: " + vacRate + " " +" Property value per capita: " + propertyRate);
                     }
                     System.out.println("END OUTPUT");
                     break;

@@ -26,7 +26,7 @@ public class CovidJsonReader extends CovidFileReader {
 	}
 
 	@Override
-	public List<Covid> readCovid() {
+	public List<Covid> readCovid() throws FileNotFoundException, IOException, ParseException {
 		// initialize covid list
 		List<Covid> allCovid = new ArrayList<>();
 
@@ -34,59 +34,47 @@ public class CovidJsonReader extends CovidFileReader {
 		String regex = "\\d{4}[-]\\d{2}[-]\\d{2}\\s+\\d{2}[:]\\d{2}[:]\\d{2}";
 		Pattern p = Pattern.compile(regex);
 
-		try {
-			Object obj = new JSONParser().parse(new FileReader(fileName));
-			logger.log(fileName);
-			JSONArray ja = (JSONArray) obj;
-			for (Object jobj : ja) {
-				JSONObject jo = (JSONObject) jobj;
+		Object obj = new JSONParser().parse(new FileReader(fileName));
+		logger.log(fileName);
+		JSONArray ja = (JSONArray) obj;
+		for (Object jobj : ja) {
+			JSONObject jo = (JSONObject) jobj;
 
-				// initialize vaccined data
-				int zipcode;
-				int partiallyVaccined = 0;
-				int fullyVaccined = 0;
-				String timeStamp;
+			// initialize vaccined data
+			int zipcode;
+			int partiallyVaccined = 0;
+			int fullyVaccined = 0;
+			String timeStamp;
 
-				zipcode = (int) ((long) jo.get("zip_code"));
+			zipcode = (int) ((long) jo.get("zip_code"));
 
-				// check if the vaccines is missing
-				if (jo.get("partially_vaccinated") != null) {
-					partiallyVaccined = (int) ((long) jo.get("partially_vaccinated"));
-				}
-
-				// check if the vaccines is missing
-				if (jo.get("fully_vaccinated") != null) {
-					fullyVaccined = (int) ((long) jo.get("fully_vaccinated"));
-				}
-
-				// check if the zipcode is 5 digits
-				if ((String.valueOf(zipcode)).length() != 5) {
-					continue;
-				}
-
-				// check if the timestamp is in the right format
-				Matcher m = p.matcher((String) jo.get("etl_timestamp"));
-
-				if (m.find()) {
-					timeStamp = (String) jo.get("etl_timestamp");
-				} else {
-					continue;
-				}
-
-				Covid covid = new Covid(zipcode, partiallyVaccined, fullyVaccined, timeStamp);
-				allCovid.add(covid);
-
+			// check if the vaccines is missing
+			if (jo.get("partially_vaccinated") != null) {
+				partiallyVaccined = (int) ((long) jo.get("partially_vaccinated"));
 			}
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.exit(1);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			System.exit(1);
+			// check if the vaccines is missing
+			if (jo.get("fully_vaccinated") != null) {
+				fullyVaccined = (int) ((long) jo.get("fully_vaccinated"));
+			}
+
+			// check if the zipcode is 5 digits
+			if ((String.valueOf(zipcode)).length() != 5) {
+				continue;
+			}
+
+			// check if the timestamp is in the right format
+			Matcher m = p.matcher((String) jo.get("etl_timestamp"));
+
+			if (m.find()) {
+				timeStamp = (String) jo.get("etl_timestamp");
+			} else {
+				continue;
+			}
+
+			Covid covid = new Covid(zipcode, partiallyVaccined, fullyVaccined, timeStamp);
+			allCovid.add(covid);
+
 		}
 
 		return allCovid;

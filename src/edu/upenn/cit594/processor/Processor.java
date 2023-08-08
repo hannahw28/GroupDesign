@@ -8,6 +8,8 @@ import edu.upenn.cit594.util.*;
 import java.io.IOException;
 import java.util.*;
 
+import org.json.simple.parser.ParseException;
+
 public class Processor {
     private List<Covid> covid;
     private List<Population> population;
@@ -20,7 +22,7 @@ public class Processor {
     protected AverageCalculator livableAreaCalculator = new AverageLivableAreaCalculator();
 
 
-    public Processor(CovidFileReader covidReader, PopulationFileReader populationReader, PropertyFileReader propertyReader) {
+    public Processor(CovidFileReader covidReader, PopulationFileReader populationReader, PropertyFileReader propertyReader) throws IOException, CSVFormatException, ParseException {
         this.covidReader = covidReader;
         if (covidReader != null){
             covid = covidReader.readCovid();

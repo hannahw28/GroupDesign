@@ -24,81 +24,74 @@ public class PropertyFileReader {
 	 * Read property data
 	 * 
 	 * @return list of properties
+	 * @throws IOException
+	 * @throws CSVFormatException
 	 */
-	public List<Property> readProperty() {
+	public List<Property> readProperty() throws IOException, CSVFormatException {
 		// initialize arraylist to return
 		List<Property> allProperty = new ArrayList<>();
 
 		// initialize CSV Reader
 		CharacterReader reader;
-		try {
-			reader = new CharacterReader(fileName);
-			// logging
-			logger.log(fileName);
 
-			var csvReader = new CSVReader(reader);
+		reader = new CharacterReader(fileName);
+		// logging
+		logger.log(fileName);
 
-			// initialize index numbers
-			int zipcodePos = 0;
-			int valuePos = 0;
-			int areaPos = 0;
+		var csvReader = new CSVReader(reader);
 
-			String[] row;
+		// initialize index numbers
+		int zipcodePos = 0;
+		int valuePos = 0;
+		int areaPos = 0;
 
-			// get index
-			try {
-				row = csvReader.readRow();
+		String[] row;
 
-				for (int i = 0; i < row.length; i++) {
+		// get index
 
-					switch (row[i]) {
-					case "zip_code":
-						zipcodePos = i;
-						break;
-					case "total_livable_area":
-						areaPos = i;
-						break;
-					case "market_value":
-						valuePos = i;
-						break;
-					}
-				}
+		row = csvReader.readRow();
 
-				// read data
-				while ((row = csvReader.readRow()) != null) {
-					// initialize instance for property constructors
-					int zipCode;
-					String marketValue;
-					String totalLivableArea;
+		for (int i = 0; i < row.length; i++) {
 
-					// check if the zipcode is less than 5 digits
-					if (row[zipcodePos].length() > 4) {
-						// check if the first 5 digits are ints
-						try {
-							zipCode = Integer.parseInt(row[zipcodePos].substring(0, 5));
-						} catch (NumberFormatException e) {
-							continue;
-						}
-
-					} else {
-						continue;
-					}
-
-					marketValue = row[valuePos];
-					totalLivableArea = row[areaPos];
-
-					// create property entry and add to property list
-					Property property = new Property(marketValue, totalLivableArea, zipCode);
-					allProperty.add(property);
-				}
-			} catch (CSVFormatException e) {
-				e.printStackTrace();
-				System.exit(1);
-
+			switch (row[i]) {
+			case "zip_code":
+				zipcodePos = i;
+				break;
+			case "total_livable_area":
+				areaPos = i;
+				break;
+			case "market_value":
+				valuePos = i;
+				break;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+		}
+
+		// read data
+		while ((row = csvReader.readRow()) != null) {
+			// initialize instance for property constructors
+			int zipCode;
+			String marketValue;
+			String totalLivableArea;
+
+			// check if the zipcode is less than 5 digits
+			if (row[zipcodePos].length() > 4) {
+				// check if the first 5 digits are ints
+				try {
+					zipCode = Integer.parseInt(row[zipcodePos].substring(0, 5));
+				} catch (NumberFormatException e) {
+					continue;
+				}
+
+			} else {
+				continue;
+			}
+
+			marketValue = row[valuePos];
+			totalLivableArea = row[areaPos];
+
+			// create property entry and add to property list
+			Property property = new Property(marketValue, totalLivableArea, zipCode);
+			allProperty.add(property);
 		}
 
 		// return property list

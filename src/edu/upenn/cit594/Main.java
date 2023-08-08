@@ -4,6 +4,7 @@ import edu.upenn.cit594.datamanagement.*;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.ui.UI;
+import edu.upenn.cit594.util.CSVFormatException;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +12,10 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.simple.parser.ParseException;
+
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, CSVFormatException, ParseException {
         Set<String> availableDatasets = new HashSet<>();
         Map<String, String> seenArgs = new HashMap<>();
         StringBuilder sb = new StringBuilder();

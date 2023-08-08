@@ -23,81 +23,74 @@ public class PopulationFileReader {
 	 * Read population data files
 	 * 
 	 * @return list of population data
+	 * @throws IOException 
+	 * @throws CSVFormatException 
 	 */
-	public List<Population> readPopulation() {
+	public List<Population> readPopulation() throws IOException, CSVFormatException {
 
 		// initialize arraylist to return
 		List<Population> allPopulation = new ArrayList<>();
 
 		// initialize CSV Reader
 		CharacterReader reader;
-		try {
-			reader = new CharacterReader(fileName);
-			// logging
-			logger.log(fileName);
 
-			var csvReader = new CSVReader(reader);
+		reader = new CharacterReader(fileName);
+		// logging
+		logger.log(fileName);
 
-			// initialize index numbers
-			int zipcodePos = 0;
-			int populationPos = 0;
+		var csvReader = new CSVReader(reader);
 
-			String[] row;
+		// initialize index numbers
+		int zipcodePos = 0;
+		int populationPos = 0;
 
-			// get index
-			try {
-				row = csvReader.readRow();
+		String[] row;
 
-				for (int i = 0; i < row.length; i++) {
+		// get index
 
-					switch (row[i]) {
-					case "zip_code":
-						zipcodePos = i;
-						break;
-					case "population":
-						populationPos = i;
-						break;
-					}
-				}
+		row = csvReader.readRow();
 
-				// read data
-				while ((row = csvReader.readRow()) != null) {
-					// initialize instance for population constructors
-					int zipCode;
-					int populationVal;
+		for (int i = 0; i < row.length; i++) {
 
-					// check if the zipcode is less than 5 digits
-					if (row[zipcodePos].length() == 5) {
-						// check if the first 5 digits are ints
-						try {
-							zipCode = Integer.parseInt(row[zipcodePos].substring(0, 5));
-						} catch (NumberFormatException e) {
-							continue;
-						}
-
-					} else {
-						continue;
-					}
-
-					// check if the population is integers
-					try {
-						populationVal = Integer.parseInt(row[populationPos]);
-					} catch (NumberFormatException e) {
-						continue;
-					}
-
-					// create population entry and add to population list
-					Population population = new Population(zipCode, populationVal);
-					allPopulation.add(population);
-				}
-			} catch (CSVFormatException e) {
-				e.printStackTrace();
-				System.exit(1);
-
+			switch (row[i]) {
+			case "zip_code":
+				zipcodePos = i;
+				break;
+			case "population":
+				populationPos = i;
+				break;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+		}
+
+		// read data
+		while ((row = csvReader.readRow()) != null) {
+			// initialize instance for population constructors
+			int zipCode;
+			int populationVal;
+
+			// check if the zipcode is less than 5 digits
+			if (row[zipcodePos].length() == 5) {
+				// check if the first 5 digits are ints
+				try {
+					zipCode = Integer.parseInt(row[zipcodePos].substring(0, 5));
+				} catch (NumberFormatException e) {
+					continue;
+				}
+
+			} else {
+				continue;
+			}
+
+			// check if the population is integers
+			try {
+				populationVal = Integer.parseInt(row[populationPos]);
+			} catch (NumberFormatException e) {
+				continue;
+			}
+
+			// create population entry and add to population list
+			Population population = new Population(zipCode, populationVal);
+			allPopulation.add(population);
 		}
 
 		// return property list

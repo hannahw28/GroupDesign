@@ -1,6 +1,5 @@
 package edu.upenn.cit594.datamanagement;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,110 +29,101 @@ public class CovidCsvReader extends CovidFileReader {
 	 * Reads Covid data
 	 * 
 	 * @return list of Covid datas
+	 * @throws IOException 
+	 * @throws CSVFormatException 
 	 */
 	@Override
-	public List<Covid> readCovid() {
+	public List<Covid> readCovid() throws IOException, CSVFormatException {
 		// initialize arraylist to return
 		List<Covid> covid = new ArrayList<>();
 
 		// initialize CSV Reader
 		CharacterReader reader;
-		try {
-			reader = new CharacterReader(fileName);
-			// logging
-			logger.log(fileName);
 
-			var csvReader = new CSVReader(reader);
+		reader = new CharacterReader(fileName);
+		// logging
+		logger.log(fileName);
 
-			// initialize index numbers
-			int zipcodePos = 0;
-			int partialPos = 0;
-			int fullyPos = 0;
-			int timePos = 0;
+		var csvReader = new CSVReader(reader);
 
-			String[] row;
+		// initialize index numbers
+		int zipcodePos = 0;
+		int partialPos = 0;
+		int fullyPos = 0;
+		int timePos = 0;
 
-			// get index
-			try {
-				row = csvReader.readRow();
+		String[] row;
 
-				for (int i = 0; i < row.length; i++) {
+		// get index
 
-					switch (row[i]) {
-					case "zip_code":
-						zipcodePos = i;
-						break;
-					case "partially_vaccinated":
-						partialPos = i;
-						break;
-					case "fully_vaccinated":
-						fullyPos = i;
-						break;
-					case "etl_timestamp":
-						timePos = i;
-						break;
-					}
-				}
-				// initialize format for timestamp
-				String regex = "\\d{4}[-]\\d{2}[-]\\d{2}\\s+\\d{2}[:]\\d{2}[:]\\d{2}";
-				Pattern p = Pattern.compile(regex);
+		row = csvReader.readRow();
 
-				// read data
-				while ((row = csvReader.readRow()) != null) {
-					// initialize instance for covid constructors
-					int zipCode;
-					int partial;
-					int fully;
-					String timeStamp;
+		for (int i = 0; i < row.length; i++) {
 
-					// check if the zipcode is 5 digits
-					if (row[zipcodePos].length() == 5) {
-						zipCode = Integer.parseInt(row[zipcodePos]);
-					} else {
-						continue;
-					}
-
-					// check if the timestamp is in correct format
-					Matcher m = p.matcher(row[timePos]);
-					if (m.find()) {
-						timeStamp = row[timePos];
-					} else {
-						continue;
-					}
-
-					// check if partial vaccined is missing
-					if (row[partialPos].equals("")) {
-						partial = 0;
-					} else {
-						partial = Integer.parseInt(row[partialPos]);
-					}
-
-					// check if fully vaccined is missing
-					if (row[fullyPos].equals("")) {
-						fully = 0;
-					} else {
-						fully = Integer.parseInt(row[fullyPos]);
-					}
-
-					// create covid entry and add to covid list
-					Covid covidEntry = new Covid(zipCode, partial, fully, timeStamp);
-					covid.add(covidEntry);
-				}
-			} catch (CSVFormatException e) {
-				e.printStackTrace();
-				System.exit(1);
-				
+			switch (row[i]) {
+			case "zip_code":
+				zipcodePos = i;
+				break;
+			case "partially_vaccinated":
+				partialPos = i;
+				break;
+			case "fully_vaccinated":
+				fullyPos = i;
+				break;
+			case "etl_timestamp":
+				timePos = i;
+				break;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
+		}
+		// initialize format for timestamp
+		String regex = "\\d{4}[-]\\d{2}[-]\\d{2}\\s+\\d{2}[:]\\d{2}[:]\\d{2}";
+		Pattern p = Pattern.compile(regex);
+
+		// read data
+		while ((row = csvReader.readRow()) != null) {
+			// initialize instance for covid constructors
+			int zipCode;
+			int partial;
+			int fully;
+			String timeStamp;
+
+			// check if the zipcode is 5 digits
+			if (row[zipcodePos].length() == 5) {
+				zipCode = Integer.parseInt(row[zipcodePos]);
+			} else {
+				continue;
+			}
+
+			// check if the timestamp is in correct format
+			Matcher m = p.matcher(row[timePos]);
+			if (m.find()) {
+				timeStamp = row[timePos];
+			} else {
+				continue;
+			}
+
+			// check if partial vaccined is missing
+			if (row[partialPos].equals("")) {
+				partial = 0;
+			} else {
+				partial = Integer.parseInt(row[partialPos]);
+			}
+
+			// check if fully vaccined is missing
+			if (row[fullyPos].equals("")) {
+				fully = 0;
+			} else {
+				fully = Integer.parseInt(row[fullyPos]);
+			}
+
+			// create covid entry and add to covid list
+			Covid covidEntry = new Covid(zipCode, partial, fully, timeStamp);
+			covid.add(covidEntry);
 		}
 
 		// return covid list
 		return covid;
 
 	}
-	
-	
-	
+
 }
