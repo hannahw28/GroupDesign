@@ -148,7 +148,12 @@ public class UI {
                     break;
                 case 7:
                     // show the results of your custom feature.
-                    Map<Integer, List<Integer>> res = processor.calculateFullVacRateAndAveragePropertyValue();
+                    String date2 = getInput(scanner, "Please enter a date in the format 'YYYY-MM-DD: ");
+                    if (!date2.matches("\\d{4}-\\d{2}-\\d{2}")){
+                        System.err.println("Error: Invalid date format. Returning to main menu");
+                        break;
+                    }
+                    Map<Integer, List<Integer>> res = processor.calculateFullVacRateAndAveragePropertyValue(date2);
                     System.out.println("BEGIN OUTPUT");
                     for (Map.Entry<Integer, List<Integer>> entry : res.entrySet()){
                         Integer zip4 = entry.getKey();

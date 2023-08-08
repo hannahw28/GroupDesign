@@ -1,0 +1,16 @@
+1691452494524 --population=population.csv --covid=covid_data.csv --log=events.log --properties=downsampled_properties.csv 
+1691452494568 covid_data.csv
+1691452494694 population.csv
+1691452494697 downsampled_properties.csv
+1691452496488 7
+1691452501753 2021-11111
+1691452504219 7
+1691452508003 2021-03-25
+1691452648279 0
+1691452677583 --population=population.csv --covid=covid_data.csv --log=events.log --properties=downsampled_properties.csv 
+1691452677627 covid_data.csv
+1691452677765 population.csv
+1691452677767 downsampled_properties.csv
+1691452679024 7
+1691452682191 2021-03-25
+1691452694136 0

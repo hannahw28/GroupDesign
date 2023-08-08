@@ -150,9 +150,9 @@ public class Processor {
         }
     }
 
-    public Map<Integer, List<Integer>> calculateFullVacRateAndAveragePropertyValue(){
+    public Map<Integer, List<Integer>> calculateFullVacRateAndAveragePropertyValue(String date){
         /*
-        List full vaccination per capital and property market value per capital for each zipcode.
+        List full vaccination per 1000 capital and property market value per capital for each zipcode.
          */
         if (covid == null || population == null || property == null){
             System.err.println("Error: covid, population, or property is null");
@@ -170,11 +170,13 @@ public class Processor {
             if (populationValue == 0) continue;
 
             for (Covid c : covid){
+                if (!c.getEtlTimestamp().substring(0,10).equals(date)) continue;
+
                 if (c.getZipcode() == zip){
                     fullVaccinatedPerCapita += (int)c.getFullyVaccinated();
                 }
             }
-            fullVaccinatedPerCapita = (int)fullVaccinatedPerCapita / populationValue;
+            fullVaccinatedPerCapita = (int)fullVaccinatedPerCapita*1000 / populationValue;
 
             for (Property p : property){
                 if (p.getZipcode() == zip && isNumeric(p.getMarketValue())){
